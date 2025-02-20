@@ -4,10 +4,7 @@ import ContextAlert from '../components/ContextAlert.astro';
 import Markdown from '../components/Markdown.astro';
 
 const explainer = `
-waxx waxx waxx 22233
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
+waxx takeover.
 `;
 ---
 
@@ -41,9 +38,6 @@ for (var i = 0; i < endpoints.length; i++) {
     request.onreadystatechange = function() {
         if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
             console.log(request.response);
-            //var tag = document.createElement("p");
-            //tag.innerText = request.response;
-            //document.body.appendChild(tag);
         }
     }
     request.send();
@@ -66,9 +60,6 @@ request.onload = function() {
         if (xhr.status != 200) {
             console.log(xhr.statusText);
         } else {
-            //var tag = document.createElement("p");
-            //tag.innerText = xhr.response;
-            //document.body.appendChild(tag);
             console.log(xhr.response);
         };
     };
